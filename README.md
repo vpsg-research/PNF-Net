@@ -20,3 +20,5 @@ Official repository for the TCSVT2026 paper “*Prototype Memory-based Neighbori
 <div align="center">
     <img width="600" alt="image" src="1.png?raw=true">
 </div>
+
+Existing IML methods generally fall into two categories: (a) local structural modeling, which leverages boundary, noise, or frequency cues to capture local artifacts; and (b) global semantic modeling, which enhances semantic discrepancies between tampered regions and the background via network design and feature interactions. (c) We construct a clusterable memory bank that aggregates manipulation cues into reusable memory priors, which proactively guide representation learning.
