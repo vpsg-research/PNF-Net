@@ -16,3 +16,7 @@
 
 ##  Introduction
 Official repository for the TCSVT2026 paper “*Prototype Memory-based Neighboring Feature Fusion Network for Image Manipulation Localization*”
+
+<div align="center">
+    <img width="600" alt="image" src="1.png?raw=true">
+</div>
