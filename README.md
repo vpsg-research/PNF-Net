@@ -5,6 +5,7 @@
 ## 📢 News
 * **[2026-4]** Our paper is accepted by **TCSVT 2026**! 🎉
 * **[2026-4]** The code are being organized and will be released shortly. Please star this repo for updates!
+* **[2025-11]** Our paper is accepted by **AAAI 2026**! 🎉([https://arxiv.org/abs/2507.13018](https://github.com/vpsg-research/SCAF)) 
 
 ## ✨ Contributions
 ⚠️ We propose a novel PNF-Net for IML, which uses memory priors to guide representation learning for precise localization of tampered regions. It effectively integrates valuable information from neighboring features to form robust fused feature representations. Extensive experiments show that our model achieves SOTA performance.
