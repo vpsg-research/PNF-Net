@@ -79,6 +79,7 @@ python eval.py
 
 ## Citation
 If you find our code useful, please consider citing us and give us a star!
+
 ```
 @inproceedings{LiSCAF,
   title={Prototype Memory-based Neighboring Feature Fusion Network for Image Manipulation Localization},
