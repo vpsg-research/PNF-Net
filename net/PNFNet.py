@@ -659,7 +659,7 @@ class Net(nn.Module):
         self.ff4 = Fusion(64)
         self.conv_block = Conv_Block(64)
         self.ef = MemoryConceptAttentionProto(
-            64, nn.Conv2d, pool_size_per_cluster=200, 
+            64, nn.Conv2d, pool_size_per_cluster=100, 
             num_k=10, feature_dim=128, warmup_total_iter=2000, cp_momentum=0.3, cp_phi_momentum=0.95
         )
         self.predictor1 = nn.Conv2d(64, 1, 1)
