@@ -13,3 +13,6 @@
 
 🧩We design a hierarchically collaborative feature refinement mechanism comprising the  NFIM and  VFM. NFIM aggregates adjacent complementary cues to handle scale variations, while VFM establishes cross-level channel dependencies and enforces structural integrity via multi-level supervision. This synergy enables robust representations for localizing tampering artifacts.
 
+
+##  Introduction
+Official repository for the TCSVT2026 paper “*Prototype Memory-based Neighboring Feature Fusion Network for Image Manipulation Localization*”
