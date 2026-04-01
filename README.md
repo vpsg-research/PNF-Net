@@ -6,4 +6,10 @@
 * **[2026-4]** Our paper is accepted by **TCSVT 2026**! 🎉
 * **[2026-4]** The code are being organized and will be released shortly. Please star this repo for updates!
 
-## ✨ Highlights
+## ✨ Contributions
+*⚠️ We propose a novel PNF-Net for IML, which uses memory priors to guide representation learning for precise localization of tampered regions. It effectively integrates valuable information from neighboring features to form robust fused feature representations. Extensive experiments show that our model achieves SOTA performance.
+
+*🚀 We propose an MLM inspired by ``grandmother cells” in the primary visual cortex (V1) of macaque monkeys. The MLM uses semantic clusters to accumulate consistencies and anomalies between tampered regions and the background in images, forming memory priors that guide IML representation learning.
+
+*🧩We design a hierarchically collaborative feature refinement mechanism comprising the  NFIM and  VFM. NFIM aggregates adjacent complementary cues to handle scale variations, while VFM establishes cross-level channel dependencies and enforces structural integrity via multi-level supervision. This synergy enables robust representations for localizing tampering artifacts.
+
