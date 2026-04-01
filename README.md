@@ -50,3 +50,21 @@ conda env create -f PNFNet.yml
 - NIST16    [Download](https://mfc.nist.gov/users/sign_in)
 - Korus [Download](https://pkorus.pl/downloads/dataset-realistic-tampering)
 - IMD2020 [Download](https://staff.utia.cas.cz/novozada/db/)
+
+### 3. Train
+
+To train our PNF-Net, first ensure that the pretrained [PVTv2-B2](https://github.com/whai362/PVT) weights are ready, and then simply run the corresponding training script.
+```bash
+# Make sure your directory paths are set correctly!
+python train.py
+```
+### 4. Test
+```bash
+python test.py
+```
+
+### 5. Evaluation
+After confirming that the paths to your prediction and ground-truth files are correct, run the following script to compute pixel-level F1, IoU, and AUC.
+```bash
+python eval.py
+```
