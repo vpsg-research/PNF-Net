@@ -27,19 +27,15 @@ class MemoryConceptAttentionProto(nn.Module):
 
         self.register_buffer('concept_pool', torch.rand(self.feature_dim, self.total_pool_size))
         self.register_buffer('concept_proto', torch.rand(self.feature_dim, self.num_k))
-        # concept pool is arranged as memory cell, i.e. linearly arranged as a 2D tensor, use get_cluster_ptr to get starting pointer for each cluster
 
-        # states that indicating the warmup
         self.register_buffer('warmup_iter_counter', torch.FloatTensor([0.]))
         self.warmup_total_iter = warmup_total_iter
         self.register_buffer('pool_structured', torch.FloatTensor([0.]))  # 0 means pool is un clustered, 1 mean pool is structured as clusters arrays
 
-        # register attention module
         self.which_conv = which_conv
         self.theta = self.which_conv(self.ch, self.feature_dim, kernel_size=1, padding=0, bias=False)
         self.phi = self.which_conv(self.ch, self.feature_dim, kernel_size=1, padding=0, bias=False)
 
-        # 使用 nn.ModuleList 而不是 Python 列表
         self.phi_k = nn.ModuleList([self.which_conv(self.ch, self.feature_dim, kernel_size=1, padding=0, bias=False)])
         
         for param_phi, param_phi_k in zip(self.phi.parameters(), self.phi_k[0].parameters()):
@@ -55,9 +51,6 @@ class MemoryConceptAttentionProto(nn.Module):
         self.cp_momentum = cp_momentum
         self.cp_phi_momentum = cp_phi_momentum
 
-    #############################
-    #       Pool operation      #
-    #############################
     @torch.no_grad()
     def _update_pool(self, index, content):
         """update concept pool according to the content
@@ -87,35 +80,18 @@ class MemoryConceptAttentionProto(nn.Module):
     
     @torch.no_grad()
     def forward_update_pool(self, activation, cluster_num, momentum=None):
-        """update activation into the concept pool after warmup in each forward pass
-        activation: [m, c]
-        cluster_num: [m, ]
-        momentum: None or a float scalar
-        """
 
         if not momentum:
             momentum = 1.
         
-        # generate update index
         assert cluster_num.max() < self.num_k
-        # index the starting pointer of each cluster add a rand num
+
         index = cluster_num * self.pool_size_per_cluster + torch.randint(self.pool_size_per_cluster, size=(cluster_num.shape[0],)).to(activation.device)
         
-
-        # adding momentum to activation
         self.concept_pool[:, index] = (1. - momentum) * self.concept_pool[:, index].clone() + momentum * activation.detach().T
         
-
-    #############################
-    # Initialization and warmup #
-    #############################
     @torch.no_grad()
     def pool_kmean_init_gpu(self, seed=0, gpu_num=0, temperature=1):
-        """TODO: clear up
-        perform kmeans for cluster concept pool initialization
-        Args:
-            x: data to be clustered
-        """
         
         print('performing kmeans clustering')
         results = {'im2cluster':[],'centroids':[],'density':[]}
@@ -144,22 +120,20 @@ class MemoryConceptAttentionProto(nn.Module):
         D, I = index.search(x, 1) # for each sample, find cluster distance and assignments
         im2cluster = [int(n[0]) for n in I]
         
-        # get cluster centroids
+
         centroids = faiss.vector_to_array(clus.centroids).reshape(k,d)
         
-        # sample-to-centroid distances for each cluster 
+ 
         Dcluster = [[] for c in range(k)]          
         for im,i in enumerate(im2cluster):
             Dcluster[i].append(D[im][0])
         
-        # concentration estimation (phi)        
         density = np.zeros(k)
         for i,dist in enumerate(Dcluster):
             if len(dist)>1:
                 d = (np.asarray(dist)**0.5).mean()/np.log(len(dist)+10)            
                 density[i] = d     
                 
-        #if cluster only has one point, use the max to estimate its concentration        
         dmax = density.max()
         for i,dist in enumerate(Dcluster):
             if len(dist)<=1:
@@ -169,7 +143,6 @@ class MemoryConceptAttentionProto(nn.Module):
         print(density.mean())
         density = temperature*density/density.mean()  #scale the mean to temperature 
         
-        # convert to cuda Tensors for broadcast
         centroids = torch.Tensor(centroids)
         centroids = nn.functional.normalize(centroids, p=2, dim=1)    
 
@@ -182,7 +155,6 @@ class MemoryConceptAttentionProto(nn.Module):
         
         del cfg, res, index, clus
 
-        # rearrange
         self.structure_memory_bank(results) 
         print("Finish kmean init...")
         del results
@@ -210,8 +182,6 @@ class MemoryConceptAttentionProto(nn.Module):
         results['centroids'].append(centroids)
         results['im2cluster'].append(im2cluster)    
         
-       
-        # rearrange
         self.structure_memory_bank(results) 
         print("Finish kmean init...")
     
@@ -226,22 +196,18 @@ class MemoryConceptAttentionProto(nn.Module):
         memory_states = torch.zeros(self.num_k,).long() # 0 indicate the cluster has not finished structured
         memory_cluster_insert_ptr = torch.zeros(self.num_k,).long() # ptr to each cluster block
 
-        # loop through every cluster assignment to populate the concept pool for each cluster seperately
         for idx, i in enumerate(cluster_assignment):
             cluster_num = i
             if memory_states[cluster_num] == 0:
                 
-                # manipulating the index for populating memory
                 mem_index[cluster_num * self.pool_size_per_cluster + memory_cluster_insert_ptr[cluster_num]] = idx  
 
                 memory_cluster_insert_ptr[cluster_num] += 1
                 if memory_cluster_insert_ptr[cluster_num] == self.pool_size_per_cluster:
                     memory_states[cluster_num] = 1 - memory_states[cluster_num]
             else:
-                # check if the ptr for this class is set to the last point
                 assert memory_cluster_insert_ptr[cluster_num] == self.pool_size_per_cluster
         
-        # what if some cluster didn't get populated enough? -- replicate
         not_fill_cluster = torch.where(memory_states == 0)[0]
         print(f"memory_states {memory_states}")
         print(f"memory_cluster_insert_ptr {memory_cluster_insert_ptr}")
@@ -256,14 +222,14 @@ class MemoryConceptAttentionProto(nn.Module):
             print(f"replicate_times {replicate_times}")
             replicated_index = torch.cat([existed_index for _ in range(replicate_times)])
             print(f"replicated_index {replicated_index}")
-            # permutate the replicate and select pool_size_per_cluster num of index
+
             replicated_index = replicated_index[torch.randperm(replicated_index.shape[0])][:self.pool_size_per_cluster] # [pool_size_per_cluster, ]
-            # put it back
+
             assert replicated_index.shape[0] == self.pool_size_per_cluster, f"replicated_index ({replicated_index.shape}) should has the same len as pool_size_per_cluster ({self.pool_size_per_cluster})"
             mem_index[unfill_cluster * self.pool_size_per_cluster: (unfill_cluster+1) * self.pool_size_per_cluster] = replicated_index
-            # update ptr
+
             memory_cluster_insert_ptr[unfill_cluster] = self.pool_size_per_cluster
-            # update state
+
             memory_states[unfill_cluster] = 1
         
         assert (memory_states == 0).sum() == 0, f"memory_states has zeros: {memory_states}"
@@ -313,9 +279,6 @@ class MemoryConceptAttentionProto(nn.Module):
         # update number
         self.warmup_iter_counter += 1
 
-    #############################
-    #       Forward logic       #
-    #############################
     def forward(self, x, evaluation=False):
         device = x.device  # 确保在 forward 中动态地获取设备
 
@@ -451,10 +414,6 @@ class MemoryConceptAttentionProto(nn.Module):
                 return o * self.gamma + x, cluster_affinity
                 
             return o * self.gamma + x
-
-    #############################
-    #     Helper  functions     #
-    #############################
 
     def get_cluster_num_index(self, idx):
         assert idx < self.total_pool_size
