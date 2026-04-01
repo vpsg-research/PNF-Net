@@ -30,5 +30,5 @@ Existing IML methods generally fall into two categories: (a) local structural mo
 To set up the experimental environment, please follow the specific requirements for each baseline model. Taking **PNF-Net** as an example, you can create and install the environment using the provided script:
 
 ```bash
-conda env create -f SCAF.yml
+conda env create -f PNFNet.yml
 ```
