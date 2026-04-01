@@ -68,3 +68,22 @@ After confirming that the paths to your prediction and ground-truth files are co
 ```bash
 python eval.py
 ```
+
+@inproceedings{LiSCAF,
+  title={Beyond Fully Supervised Pixel Annotations: Scribble-Driven Weakly-Supervised Framework for Image Manipulation Localization},
+  author={Li, Songlin and Yu, Guofeng and Guo, Zhiqing and Diao, Yunfeng and Ma, Dan and Yang, Gaobo},
+  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+  year={2026}
+}
+```
+
+## Citation
+If you find our code useful, please consider citing us and give us a star!
+```
+@inproceedings{LiSCAF,
+  title={Prototype Memory-based Neighboring Feature Fusion Network for Image Manipulation Localization},
+  author={Li, Songlin and and Guo, Zhiqing and Miao, Changtao and Wenzhong, Yang and Liejun, Wang and Yang, Gaobo and Liao, Xin},
+  booktitle={IEEE Transactions on Circuits and Systems for Video Technology},
+  year={2026}
+}
+```
