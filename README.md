@@ -32,3 +32,21 @@ To set up the experimental environment, please follow the specific requirements 
 ```bash
 conda env create -f PNFNet.yml
 ```
+### 2. Prepare Datasets
+| Dataset     | Nums        |  #CM          | #SP          | #IP          |  #Train          |  #Test          | 
+| :----:      |    :----:   |         :----:|:----:        |    :----:    |         :----:   |         :----:  |
+| CASIAv2   | 5123        | 3295          |1828          |    0         |        5123      |        0        |
+| CASIAv1   | 920         | 459           |461           |    0         |        0         |        920      |
+| Coverage    | 100         | 100           |0             |    0         |        70        |        30       |
+| Columbia    | 180         | 0             |180           |    0         |         130      |        50       |
+| NIST16      | 564         | 68            |288           |    208       |        414       |        150      |
+|Korus   | 220 | -|-|-|0|220|
+|IMD2020|2010|-|-|-|0|2010|
+
+- CASIAv2 [Download](https://github.com/SunnyHaze/IML-Dataset-Corrections)
+- CASIAv1 [Download](https://github.com/SunnyHaze/IML-Dataset-Corrections)
+- Columbia  [Download](https://www.ee.columbia.edu/ln/dvmm/downloads/authsplcuncmp/)
+- Coverage  [Download](https://github.com/wenbihan/coverage?tab=readme-ov-file)
+- NIST16    [Download](https://mfc.nist.gov/users/sign_in)
+- Korus [Download](https://pkorus.pl/downloads/dataset-realistic-tampering)
+- IMD2020 [Download](https://staff.utia.cas.cz/novozada/db/)
