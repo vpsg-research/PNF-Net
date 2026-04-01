@@ -22,3 +22,13 @@ Official repository for the TCSVT2026 paper “*Prototype Memory-based Neighbori
 </div>
 
 Existing IML methods generally fall into two categories: (a) local structural modeling, which leverages boundary, noise, or frequency cues to capture local artifacts; and (b) global semantic modeling, which enhances semantic discrepancies between tampered regions and the background via network design and feature interactions. (c) We construct a clusterable memory bank that aggregates manipulation cues into reusable memory priors, which proactively guide representation learning.
+
+## 🎮 Getting Started
+
+### 1. Install Environment
+
+To set up the experimental environment, please follow the specific requirements for each baseline model. Taking **PNF-Net** as an example, you can create and install the environment using the provided script:
+
+```bash
+conda env create -f SCAF.yml
+```
