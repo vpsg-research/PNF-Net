@@ -75,10 +75,15 @@ python eval.py
 If you find our code useful, please consider citing us and give us a star!
 
 ```
-@inproceedings{LiSCAF,
-  title={Prototype Memory-based Neighboring Feature Fusion Network for Image Manipulation Localization},
-  author={Li, Songlin and and Guo, Zhiqing and Miao, Changtao and Wenzhong, Yang and Liejun, Wang and Yang, Gaobo and Liao, Xin},
-  booktitle={IEEE Transactions on Circuits and Systems for Video Technology},
-  year={2026}
-}
+@ARTICLE{LI_PNF,
+  author={Li, Songlin and Guo, Zhiqing and Miao, Changtao and Yang, Wenzhong and Wang, Liejun and Yang, Gaobo and Liao, Xin},
+  journal={IEEE Transactions on Circuits and Systems for Video Technology}, 
+  title={Prototype Memory-based Neighboring Feature Fusion Network for Image Manipulation Localization}, 
+  year={2026},
+  volume={},
+  number={},
+  pages={1-1},
+  keywords={Frequency modulation;Radio broadcasting;Circuits and systems;Low-pass filters;Filters;Location awareness;Mobile communication;Videos;Video equipment;Pixel;Image manipulation localization;prototype memory;neighboring feature;contextual semantics},
+  doi={10.1109/TCSVT.2026.3679746}}
+
 ```
